@@ -8,4 +8,5 @@
 	<string name="user_name_placeholder">40916P01</string>
 	<string name="password_placeholder">123456</string>
 	<string name="role_placeholder">0</string>
+	<string name="mainAcitvity">主页</string>
 </resources>

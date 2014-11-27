@@ -1,116 +1,66 @@
 package cn.njcit.view;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.widget.*;
 import cn.njcit.R;
-import cn.njcit.constants.AppConstants;
-import cn.njcit.util.LeaveJsonHttpResponseHandler;
-import cn.njcit.util.data.SharedPrefeenceUtils;
-import cn.njcit.util.enctype.AESEncryptor;
-import cn.njcit.util.enctype.MD5Utils;
-import cn.njcit.util.http.HttpClientUtils;
-import com.loopj.android.http.RequestParams;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-import org.apache.commons.lang.time.DateFormatUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
+import cn.njcit.view.fragements.*;
+import org.androidannotations.annotations.*;
 
-import java.util.Date;
+/**
+ * Created by YK on 2014/11/27.
+ */
+@EActivity(R.layout.main)
+@WindowFeature({Window.FEATURE_NO_TITLE})
+public class MainActivity extends FragmentActivity {
 
-@EActivity(R.layout.login)
-public class MainActivity extends Activity {
+    @ViewById(android.R.id.tabhost)
+    FragmentTabHost tabhost;
 
-    /**用户名*/
-    @ViewById(R.id.userNo)
-    EditText mUserNo;
-    /**密码*/
-    @ViewById(R.id.password)
-    EditText mPassword;
-    /**角色*/
-    @ViewById(R.id.role)
-    EditText mRole;
-    /**确定按钮*/
-    @ViewById(R.id.loginBT)
-    Button mLogin;
+    //定义数组来存放Fragment界面
+    private Class fragmentArray[] = new Class[]{FragmentAddLeaveTab_.class, FragmentStucentCheckTab_.class, FragmentStudentSickLeavTab_.class};
 
-    /**
-     * Called when the activity is first created.
-     */
+    //定义数组来存放按钮图片
+    private int mImageViewArray[] = {R.drawable.tab_item_1_btn,R.drawable.ic_launcher,R.drawable.tab_item_1_btn, R.drawable.ic_launcher, R.drawable.ic_launcher};
+    //Tab选项卡的文字
+    private String mTextviewArray[] = {"请假", "审批", "销假"};
+    LayoutInflater layoutInflater = null;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();//初始化  动作
     }
 
-
-    /**
-     * 项目刚启动后，需要做的动作，
-     * 例如，检查用户上次登陆的时候如果勾选上了自动登陆，则此次登陆就自动读取配置配置信息登陆
-     */
-    private void init() {
-        Log.e("粗偶","这个 init 方法有没有执行 啊 ");
-    }
-
-
-    /**
-     * 登陆按钮点击事件
-     */
-    @Click(R.id.loginBT)
-    void loginBtClick(){
-        login(true);
-    }
-
-
-    /**登陆
-     * @param handLogin  手动登陆标志(手动点击登陆按钮登陆)
-     * */
-     private void login(boolean handLogin){
-        RequestParams rp = new RequestParams();
-        String userNo = null;
-        String password = null;
-        String role = null;
-        if(handLogin){
-            userNo = mUserNo.getText().toString().trim().toUpperCase();
-            rp.add("userNo",userNo);
-            password = mPassword.getText().toString();
-            rp.add("password",password);
-            role = mRole.getText().toString().trim();
-            rp.add("role",role);
-        }else{
-            userNo = SharedPrefeenceUtils.getSharedPreferenceString(this, "userNo");
-            String enPassword = SharedPrefeenceUtils.getSharedPreferenceString(this, "password");
-            password = AESEncryptor.decrypt(enPassword);
-            role = SharedPrefeenceUtils.getSharedPreferenceString(this, "role");
+    @AfterViews
+    public void initVIew() {
+        //实例化布局对象
+        layoutInflater = LayoutInflater.from(this);
+        tabhost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+        tabhost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        //得到fragment的个数,冰一个个添加 Fragment
+        int count = fragmentArray.length;
+        for(int i = 0; i < count; i++){
+            //为每一个Tab按钮设置图标、文字和内容
+            TabHost.TabSpec tabSpec = tabhost.newTabSpec(mTextviewArray[i]).setIndicator(getTabItemView(i));
+            //将Tab按钮添加进Tab选项卡中
+            tabhost.addTab(tabSpec, fragmentArray[i], null);
+            //设置Tab按钮的背景
+            tabhost.getTabWidget().getChildAt(i).setBackgroundResource(R.drawable.selector_tab_background);
         }
-        String currentTime =  DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-        rp.add("requestTime",currentTime);
-        rp.add("token", MD5Utils.md5Hex(currentTime + AppConstants.SOCKET_KEY));
-
-        final String finalUserNo = userNo;
-        final String finalPassword = password;
-        final String finalRole = role;
-        HttpClientUtils.post("/user/loginIn.do", rp, new LeaveJsonHttpResponseHandler(this) {
-            @Override
-            public void getJsonObject(JSONObject jsonObject) throws JSONException {
-                String code = jsonObject.getString("code");
-                if ("200".equals(code)) {
-                    //保存用户数据信息到sharedPreference
-                    SharedPrefeenceUtils.setSharedPreferenceString(MainActivity.this, "userNo", finalUserNo);
-                    SharedPrefeenceUtils.setSharedPreferenceString(MainActivity.this, "password", AESEncryptor.encrypt(finalPassword));
-                    SharedPrefeenceUtils.setSharedPreferenceString(MainActivity.this, "role", finalRole);
-                    //跳转到 主界面
-                } else {
-                    Toast.makeText(MainActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
+    private View getTabItemView(int index){
+        View view = layoutInflater.inflate(R.layout.tab_item_view, null);
 
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageview);
+        imageView.setImageResource(mImageViewArray[index]);
+
+        TextView textView = (TextView) view.findViewById(R.id.textview);
+        textView.setText(mTextviewArray[index]);
+
+        return view;
+    }
 }
