@@ -9,4 +9,14 @@
 	<string name="password_placeholder">123456</string>
 	<string name="role_placeholder">0</string>
 	<string name="mainAcitvity">主页</string>
+    <string name="course_leave_label">课程请假</string>
+    <string name="day_leave_label">天次请假</string>
+    <string name="leave_date_label">请假日期</string>
+    <string name="course_name_label">请假课程</string>
+    <string name="teacher_name_label">任课老师</string>
+    <string name="course_index_label">请假节数</string>
+    <string name="student_mobile_label">联系电话</string>
+    <string name="student_leave_note_label">请假事由</string>
+    <string name="leave_start_date_label">开始日期</string>
+    <string name="leave_end_date_label">结束日期</string>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.loopj.android.http.RequestParams;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.WindowFeature;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import org.json.JSONObject;
 import java.util.Date;
 
 @EActivity(R.layout.login)
+@WindowFeature({Window.FEATURE_NO_TITLE})
 public class LoginActivity extends Activity {
 
     /**用户名*/
