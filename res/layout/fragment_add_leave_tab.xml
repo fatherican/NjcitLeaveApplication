@@ -9,6 +9,7 @@
             <RadioButton android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/course_leave_label" android:layout_weight="1"
                          android:layout_marginRight="20dip"
                          android:id="@+id/courseLeaveRB"
+						 android:checked="true"
                         />
             <RadioButton android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/day_leave_label" android:layout_weight="1"
                          android:id="@+id/dayLeaveRB"
@@ -136,6 +137,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="20dip"
+							android:focusable="false"
                             />
                 </TableRow>
                 <TableRow
@@ -187,6 +189,11 @@
 
                 </TableRow>
             </TableLayout>
+			<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"/>
+				<Button android:id="@+id/add_leave_bt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/add_leave_bt" android:layout_gravity="center_horizontal"/>
+				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"/>
+			</LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

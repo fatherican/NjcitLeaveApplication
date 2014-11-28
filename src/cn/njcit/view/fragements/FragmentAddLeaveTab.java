@@ -1,18 +1,16 @@
 package cn.njcit.view.fragements;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
-import android.widget.TableLayout;
+import android.widget.*;
 import cn.njcit.R;
-import org.androidannotations.annotations.CheckedChange;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
+import cn.njcit.util.view.DialogUtils;
+import org.androidannotations.annotations.*;
 
 @EFragment(R.layout.fragment_add_leave_tab)
 public class FragmentAddLeaveTab extends Fragment {
@@ -25,6 +23,8 @@ public class FragmentAddLeaveTab extends Fragment {
     TableLayout courseLeaveTL;
     @ViewById(R.id.dayLeaveTL)
     TableLayout dayLeaveTL;
+    @ViewById(R.id.add_leave_bt)
+    Button addLeaveBt;
 
 
 
@@ -66,6 +66,12 @@ public class FragmentAddLeaveTab extends Fragment {
             courseLeaveTL.setVisibility(View.GONE);
             dayLeaveTL.setVisibility(View.VISIBLE);
         }
-
     }
+
+    @Click(R.id.add_leave_bt)
+    void addLeaveItem(){
+       DialogUtils.showTrasparentDialog(this.getActivity());
+    }
+
+
 }
