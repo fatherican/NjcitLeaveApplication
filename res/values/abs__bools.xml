@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2011 Jake Wharton
+<!-- Copyright (C) 2011 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,22 +14,9 @@
      limitations under the License.
 -->
 
-<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-
-	<com.viewpagerindicator.TabPageIndicator
-			android:id="@+id/indicator"
-			android:layout_height="wrap_content"
-			android:layout_width="fill_parent"
-			/>
-	<android.support.v4.view.ViewPager
-			android:id="@+id/pager"
-			android:layout_width="fill_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1"
-			/>
-
-</LinearLayout>
+<resources>
+    <bool name="abs__action_bar_embed_tabs">false</bool>
+    <bool name="abs__split_action_bar_is_narrow">true</bool>
+    <bool name="abs__action_bar_expanded_action_views_exclusive">true</bool>
+    <!--bool name="target_honeycomb_needs_options_menu">true</bool-->
+</resources>
