@@ -7,4 +7,9 @@ public class AppConstants {
     public static final String SOCKET_KEY="123456";
     public static final int RELOGIN_TIMES = 3 ;//session过期后，尝试重新链接的次数
     public static  int CURRENT_LOGIN_TIME = 0 ;//session过期后，当前 重试的次数
+
+
+    public static boolean STUDENT_UNCHEDK_LIST_REFRESHED = false;
+    public static boolean STUDENT_NEW_LIST_REFRESHED = false;
+    public static boolean STUDENT_HISTORY_CHECK_LIST_REFRESHED = false;
 }

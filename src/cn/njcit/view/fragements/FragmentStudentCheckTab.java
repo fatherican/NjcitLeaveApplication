@@ -17,7 +17,7 @@ import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_student_check_tab)
 public class FragmentStudentCheckTab extends Fragment {
-    private static final String[] CONTENT = new String[] { "Recent", "Artists", "Albums", "Songs", "Playlists", "Genres" };
+    private static final String[] CONTENT = new String[] { "待审批", "最新审批", "历史"};
     private View rootView;
 
     @ViewById(R.id.pager)
@@ -66,8 +66,10 @@ public class FragmentStudentCheckTab extends Fragment {
                     fragment = FragmentStudentCheckUnCheckdLeaveFragment_.newInstance();
                     break;
                 case 1:
+                    fragment = FragmentStudentCheckUnCheckdLeaveFragment_.newInstance();
                     break;
                 case 2:
+                    fragment = FragmentStudentCheckUnCheckdLeaveFragment_.newInstance();
                     break;
 
             }
