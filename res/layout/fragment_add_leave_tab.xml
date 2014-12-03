@@ -21,106 +21,6 @@
             <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/courseLeaveTL"
-                    >
-                <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="match_parent"
-                              android:gravity="center_vertical"
-                              android:text="@string/leave_date_label"
-                            />
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dip"
-                            />
-                </TableRow>
-                <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="match_parent"
-                              android:gravity="center_vertical"
-                              android:text="@string/course_name_label"
-                            />
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dip"
-                            />
-                </TableRow>
-                <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="match_parent"
-                              android:gravity="center_vertical"
-                              android:text="@string/teacher_name_label"
-                            />
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dip"
-                            />
-                </TableRow>
-                <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="match_parent"
-                              android:gravity="center_vertical"
-                              android:text="@string/course_index_label"
-                            />
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dip"
-                            />
-                </TableRow>
-                <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="match_parent"
-                              android:gravity="center_vertical"
-                              android:text="@string/student_mobile_label"
-                            />
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dip"
-                            />
-                </TableRow>
-                <TableRow
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="match_parent"
-                              android:gravity="center_vertical"
-                              android:text="@string/student_leave_note_label"
-                            />
-                    <EditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="20dip"
-                            android:gravity="top"
-                            android:lines="3"
-                            />
-
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:id="@+id/dayLeaveTL"
                     >
@@ -137,7 +37,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="20dip"
-							android:focusable="false"
+                            android:id="@+id/leaveStartDateEt"
                             />
                 </TableRow>
                 <TableRow
@@ -153,21 +53,29 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="20dip"
+                            android:id="@+id/leaveEndDateEt"
                             />
                 </TableRow>
-                 <TableRow
+            </TableLayout>
+            <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/courseLeaveTL"
+                    >
+                <TableRow
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent">
                     <TextView android:layout_width="wrap_content"
                               android:layout_height="match_parent"
                               android:gravity="center_vertical"
-                              android:text="@string/student_mobile_label"
+                              android:text="@string/leave_date_label"
                             />
                     <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="20dip"
+                            android:id="@+id/leaveDateEt"
                             />
                 </TableRow>
                 <TableRow
@@ -176,19 +84,88 @@
                     <TextView android:layout_width="wrap_content"
                               android:layout_height="match_parent"
                               android:gravity="center_vertical"
-                              android:text="@string/student_leave_note_label"
+                              android:text="@string/course_name_label"
                             />
                     <EditText
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_marginLeft="20dip"
-                            android:gravity="top"
-                            android:lines="3"
+                            android:id="@+id/courseNameEt"
                             />
-
+                </TableRow>
+                <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="match_parent"
+                              android:gravity="center_vertical"
+                              android:text="@string/teacher_name_label"
+                            />
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dip"
+                            android:id="@+id/teacherNameEt"
+                            />
+                </TableRow>
+                <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="match_parent"
+                              android:gravity="center_vertical"
+                              android:text="@string/course_index_label"
+                            />
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dip"
+                            android:id="@+id/courseIndexEt"
+                            />
                 </TableRow>
             </TableLayout>
+            <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                    <TableRow
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="match_parent"
+                                  android:gravity="center_vertical"
+                                  android:text="@string/student_mobile_label"
+                                />
+                        <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="20dip"
+                                android:id="@+id/studentMobileEt"
+                                />
+                    </TableRow>
+                    <TableRow
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+                        <TextView android:layout_width="wrap_content"
+                                  android:layout_height="match_parent"
+                                  android:gravity="center_vertical"
+                                  android:text="@string/student_leave_note_label"
+                                />
+                        <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="20dip"
+                                android:gravity="top"
+                                android:lines="3"
+                                android:id="@+id/studentNoteEt"
+                                />
+                    </TableRow>
+                </TableLayout>
 			<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
 				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1"/>
 				<Button android:id="@+id/add_leave_bt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/add_leave_bt" android:layout_gravity="center_horizontal"/>

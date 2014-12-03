@@ -21,6 +21,9 @@ public class HttpClientUtils {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
+        if(!relativeUrl.startsWith("/")){
+            relativeUrl = "/"+relativeUrl;
+        }
         return BASE_URL + relativeUrl;
     }
 }
