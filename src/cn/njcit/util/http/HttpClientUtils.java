@@ -24,6 +24,6 @@ public class HttpClientUtils {
         if(!relativeUrl.startsWith("/")){
             relativeUrl = "/"+relativeUrl;
         }
-        return BASE_URL + relativeUrl;
+        return (BASE_URL + relativeUrl).trim();
     }
 }

@@ -26,11 +26,11 @@ import java.util.Map;
 /**
  * Created by YK on 2014/12/2.
  */
-public class UncheckedLeaveAdapter extends BaseAdapter {
+public class HistorycheckedLeaveAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Map<String,String>> data ;
     private Context context;
-    public UncheckedLeaveAdapter(List<Map<String, String>> data,Context context) {
+    public HistorycheckedLeaveAdapter(List<Map<String, String>> data, Context context) {
         this.data = data;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -57,10 +57,9 @@ public class UncheckedLeaveAdapter extends BaseAdapter {
         ViewHolder viewHolder = null;
         if(convertView==null){
             viewHolder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.fragment_student_check_uncheck_item,parent,false);
+            convertView = inflater.inflate(R.layout.fragment_student_check_historycheck_item,parent,false);
             viewHolder.leaveDateTV = (TextView) convertView.findViewById(R.id.leaveDateTV);
-            viewHolder.leaveTypeTV = (TextView) convertView.findViewById(R.id.leaveTypeTV);
-            viewHolder.typeContentTV = (TextView) convertView.findViewById(R.id.leaveContentTv);
+            viewHolder.approvedTV = (TextView) convertView.findViewById(R.id.approvedTV);
             viewHolder.deleteImageView = (ImageView) convertView.findViewById(R.id.deleteBT);
             convertView.setTag(viewHolder);
         }else{
@@ -72,13 +71,11 @@ public class UncheckedLeaveAdapter extends BaseAdapter {
         String leaveType =data.get(position).get("leaveType");// 0 节次请假，1天数请假
         if("0".equals(leaveType)){
             String courseName =  data.get(position).get("courseName");
-            viewHolder.leaveTypeTV.setText("课");
-            viewHolder.typeContentTV.setText(courseName);
+            viewHolder.approvedTV.setText(courseName);
         }else  if("1".equals(leaveType)){
             String leaveStartDate =  data.get(position).get("leaveStartDate");
             String leaveEndDate =  data.get(position).get("leaveEndDate");
-            viewHolder.leaveTypeTV.setText("天");
-            viewHolder.typeContentTV.setText(leaveStartDate + "至" + leaveEndDate);
+            viewHolder.approvedTV.setText(leaveStartDate+"至"+leaveEndDate);
         }
 
         viewHolder.deleteImageView.setOnClickListener(new View.OnClickListener(){
@@ -114,7 +111,7 @@ public class UncheckedLeaveAdapter extends BaseAdapter {
                         if("200".equals(code)){
                             DialogUtils.hideTrasparentDialog(context);
                             data.remove(clickPosition);
-                            UncheckedLeaveAdapter.this.notifyDataSetChanged();
+                            HistorycheckedLeaveAdapter.this.notifyDataSetChanged();
                             Toast.makeText(context,"假条撤销成功",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(context,"系统异常",Toast.LENGTH_LONG).show();
@@ -134,18 +131,15 @@ public class UncheckedLeaveAdapter extends BaseAdapter {
     }
 
 
-    public List<Map<String, String>> getData() {
-        return data;
-    }
 
-    public void setData(List<Map<String, String>> data) {
-        this.data = data;
-    }
+
+
+
+
 
     class ViewHolder{
         public TextView leaveDateTV;
-        public TextView leaveTypeTV;
-        public TextView typeContentTV;
+        public TextView approvedTV;
         public ImageView deleteImageView;
 
     }

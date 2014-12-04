@@ -1,14 +1,18 @@
 package cn.njcit.view.fragements;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ListView;
 import android.widget.Toast;
 import cn.njcit.R;
 import cn.njcit.constants.AppConstants;
@@ -17,6 +21,9 @@ import cn.njcit.util.adapter.UncheckedLeaveAdapter;
 import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.loopj.android.http.RequestParams;
 import com.viewpagerindicator.TabPageIndicator;
 import org.androidannotations.annotations.AfterViews;
@@ -29,9 +36,15 @@ import org.json.JSONObject;
 import java.util.*;
 
 @EFragment(R.layout.fragment_student_check_uncheck)
-public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment {
-    private boolean isRefreshed = false;
+public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment implements PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
     private View rootView;
+    private int pageNum=1;
+    private int pageSize = 20;
+    private boolean isInstanced = false;//当前这个实力对象是否已经存在，已经存在则不再去调用初始化数据
+    @ViewById(R.id.pull_to_refresh_listview)
+    PullToRefreshListView pullToRefreshView;
+    List<Map<String,String>> data = new ArrayList<Map<String, String>>();
+    UncheckedLeaveAdapter ul = null;
 
     public static Fragment newInstance() {
         return new FragmentStudentCheckUnCheckdLeaveFragment_();
@@ -60,27 +73,56 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment {
 
     @AfterViews
     public void initAdapter(){
-        getUncheckedLeaveAdapter();
-
+        if(!isInstanced){
+            getUncheckedLeaveAdapter(null);
+            isInstanced = true;
+            ul = new UncheckedLeaveAdapter(data,FragmentStudentCheckUnCheckdLeaveFragment.this.getActivity());
+            pullToRefreshView.setAdapter(ul);
+            pullToRefreshView.setOnRefreshListener(this);
+            pullToRefreshView.setOnLastItemVisibleListener(this);
+        }
     }
 
-    public void getUncheckedLeaveAdapter(){
-//        if(!isRefreshed){
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView){
+        getUncheckedLeaveAdapter(Direction.DOWN);
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView){
+        getUncheckedLeaveAdapter(Direction.UP);
+    }
+
+    @Override
+    public void onLastItemVisible() {
+       if(data.size()%pageSize!=0){
+           Toast.makeText(this.getActivity(),"没有更多数据",Toast.LENGTH_SHORT).show();
+       }
+    }
+
+    public void getUncheckedLeaveAdapter(Direction direction){
+            final Direction finalDirection = direction;
+            if(finalDirection==Direction.DOWN){//重新加载list数据，所以，开启上下拉都允许模式
+                pageNum=1;
+            }
             RequestParams rp = new RequestParams();
             String currentTime =  DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
             rp.add("requestTime",currentTime);
             rp.add("token", MD5Utils.md5Hex(SharedPrefeenceUtils.getSharedPreferenceString(this.getActivity(),"userId") + AppConstants.SOCKET_KEY));
             rp.add("studentQueryLeaveListType", "1");
             rp.add("userId", SharedPrefeenceUtils.getSharedPreferenceString(this.getActivity(),"userId"));
-            rp.add("pageNum","1");
-            rp.add("pageSize","100");
+            rp.add("pageNum",pageNum+"");
+            rp.add("pageSize",pageSize+"");
             HttpClientUtils.post("/leave/studentGetLeaveList.do",rp,new LeaveJsonHttpResponseHandler(this.getActivity()) {
                 @Override
                 public void getJsonObject(JSONObject jsonObject) throws Exception {
-                    List<Map<String,String>> data = new ArrayList<Map<String, String>>();
                     String code=jsonObject.getString("code");
                     if("200".equals(code)){
-                        isRefreshed = true;
+                        pageNum++;//页码加 1
+                        if(finalDirection==Direction.DOWN){//重新加载list数据，所以，开启上下拉都允许模式
+                            data.clear();
+                            pullToRefreshView.setMode(PullToRefreshBase.Mode.BOTH);
+                        }
                         String dataStr = jsonObject.getString("data");
                         JSONArray ja = new JSONArray(dataStr);
                         int length = ja.length();
@@ -114,8 +156,13 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment {
                     }else{
                         Toast.makeText(FragmentStudentCheckUnCheckdLeaveFragment.this.getActivity(),"获取未审批列表数据失败",Toast.LENGTH_SHORT).show();
                     }
-                    UncheckedLeaveAdapter ul = new UncheckedLeaveAdapter(data,FragmentStudentCheckUnCheckdLeaveFragment.this.getActivity());
-                    setListAdapter(ul);
+                    ul.notifyDataSetChanged();
+                    pullToRefreshView.onRefreshComplete();
+                    if(data.size()%pageSize!=0){//当前页面的数据少于一页的数据，所以上拉获取更多数据模式关闭
+                        pullToRefreshView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                    }else{
+                        pullToRefreshView.setMode(PullToRefreshBase.Mode.BOTH);
+                    }
                 }
             });
 //        }else{//直接从缓存中去取
@@ -132,4 +179,9 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment {
 
     }
 
+
+
+    enum Direction{
+        UP,DOWN;
+    }
 }

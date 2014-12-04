@@ -66,10 +66,10 @@ public class FragmentStudentCheckTab extends Fragment {
                     fragment = FragmentStudentCheckUnCheckdLeaveFragment_.newInstance();
                     break;
                 case 1:
-                    fragment = FragmentStudentCheckUnCheckdLeaveFragment_.newInstance();
+                    fragment = FragmentStudentCheckNewCheckdLeaveFragment_.newInstance();
                     break;
                 case 2:
-                    fragment = FragmentStudentCheckUnCheckdLeaveFragment_.newInstance();
+                    fragment = FragmentStudentCheckHistoryCheckdLeaveFragment_.newInstance();
                     break;
 
             }
