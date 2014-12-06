@@ -1,29 +1,34 @@
 package cn.njcit.view.fragements;
 
+import android.animation.Animator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 import cn.njcit.R;
 import cn.njcit.constants.AppConstants;
 import cn.njcit.util.LeaveJsonHttpResponseHandler;
 import cn.njcit.util.adapter.HistorycheckedLeaveAdapter;
-import cn.njcit.util.adapter.UncheckedLeaveAdapter;
+import cn.njcit.util.adapter.NewcheckedLeaveAdapter;
 import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.loopj.android.http.RequestParams;
-import com.viewpagerindicator.TabPageIndicator;
+
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -32,18 +37,66 @@ import org.json.JSONObject;
 
 import java.util.*;
 
-@EFragment(R.layout.fragment_student_check_uncheck)
-public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends ListFragment {
+@EFragment(R.layout.fragment_student_check_historycheck)
+public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment implements PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
     private View rootView;
     private int pageNum = 1;
     private int pageSize = 20;
     private boolean isInstanced = false;//当前这个实力对象是否已经存在，已经存在则不再去调用初始化数据
+    @ViewById(R.id.history_query_linearLayout)
+    LinearLayout historyQueryLinearLayout;
+    @ViewById(R.id.query_arrow_linearLayout)
+    LinearLayout queryArrowLinearLayout;
+    @ViewById(R.id.query_arrow_image)
+    ImageView queryArrowImage;
+    @ViewById(R.id.query_content_linearLayout)
+    LinearLayout queryContentLinearLayout;
+    @ViewById(R.id.leaveStartDateEt)
+    EditText leaveStartDateET;
+    @ViewById(R.id.leaveEndDateEt)
+    EditText leaveEndDateET;
+    @ViewById(R.id.queryBT)
+    Button queryBT;
+    @ViewById(R.id.holeLinearLayout)
+    LinearLayout holeLinearLayout;
+
+    NewcheckedLeaveAdapter hl = null;
+    List<Map<String,String>> data = new ArrayList<Map<String, String>>();
+
 
     @ViewById(R.id.pull_to_refresh_listview)
     PullToRefreshListView pullToRefreshView;
+    private boolean isShown=true;
+    int height = 0;
+    ViewPropertyAnimator vpa =null;
+
+
 
     public static Fragment newInstance() {
         return new FragmentStudentCheckHistoryCheckdLeaveFragment_();
+    }
+
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView){
+        getUncheckedLeaveAdapter(Direction.DOWN);
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView){
+        getUncheckedLeaveAdapter(Direction.UP);
+    }
+
+    @Override
+    public void onLastItemVisible() {
+        if(data.size()%pageSize!=0){
+            Toast.makeText(this.getActivity(),"没有更多数据",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Click(R.id.queryBT)
+    public void  query(){
+        getUncheckedLeaveAdapter(null);
     }
 
 
@@ -69,14 +122,86 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends ListFragmen
 
     @AfterViews
     public void initAdapter() {
-        if (!isInstanced) {
-            getUncheckedLeaveAdapter();
+        if(!isInstanced){
+            getUncheckedLeaveAdapter(null);
             isInstanced = true;
+            hl = new NewcheckedLeaveAdapter(data,FragmentStudentCheckHistoryCheckdLeaveFragment.this.getActivity());
+            pullToRefreshView.setAdapter(hl);
+            pullToRefreshView.setOnRefreshListener(this);
+            pullToRefreshView.setOnLastItemVisibleListener(this);
         }
-        Log.e("实例化", isInstanced + "");
     }
 
-    public void getUncheckedLeaveAdapter() {
+    @Click(R.id.query_arrow_linearLayout)
+    void queryContentShowOrHide(){
+        if(height==0){
+            height = queryContentLinearLayout.getHeight()-queryArrowLinearLayout.getHeight();
+        }
+        if(vpa==null){
+            vpa =  queryContentLinearLayout.animate();
+            vpa.setDuration(200);
+        }
+        if(isShown){
+            historyQueryLinearLayout.setVisibility(View.GONE);
+            isShown =false;
+            queryArrowImage.setImageResource(android.R.drawable.arrow_down_float);
+
+            /** vpa.translationYBy(-height);
+             vpa.start();
+
+             queryArrowImage.setImageResource(android.R.drawable.arrow_down_float);*/
+        }else{
+          /**  vpa.translationYBy(height);
+            vpa.start();
+
+            queryArrowImage.setImageResource(android.R.drawable.arrow_up_float);*/
+            historyQueryLinearLayout.setVisibility(View.VISIBLE);
+            isShown =true;
+            queryArrowImage.setImageResource(android.R.drawable.arrow_up_float);
+
+        }
+        vpa.setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(isShown){
+                   // historyQueryLinearLayout.setVisibility(View.GONE);
+                    //ListView.LayoutParams layoutParams = new ListView.LayoutParams(holeLinearLayout);
+                    holeLinearLayout.postInvalidate();
+                   // pullToRefreshView.setLayoutParams(layoutParams);
+                }else{
+                    //historyQueryLinearLayout.setVisibility(View.VISIBLE);
+                    holeLinearLayout.postInvalidate();
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+    public void getUncheckedLeaveAdapter(final Direction direction) {
+        final Direction finalDirection = direction;
+        if(finalDirection==Direction.DOWN||finalDirection==null){//重新加载list数据，所以，开启上下拉都允许模式
+            pageNum=1;
+        }
         RequestParams rp = new RequestParams();
         String currentTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
         rp.add("requestTime", currentTime);
@@ -85,13 +210,21 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends ListFragmen
         rp.add("userId", SharedPrefeenceUtils.getSharedPreferenceString(this.getActivity(), "userId"));
         rp.add("pageNum", pageNum + "");
         rp.add("pageSize", pageSize + "");
+        rp.add("startTime",leaveStartDateET.getText().toString());
+        rp.add("endTime",leaveEndDateET.getText().toString());
+
+
         HttpClientUtils.post("/leave/studentGetLeaveList.do", rp, new LeaveJsonHttpResponseHandler(this.getActivity()) {
             @Override
             public void getJsonObject(JSONObject jsonObject) throws Exception {
-                List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+
                 String code = jsonObject.getString("code");
                 if ("200".equals(code)) {
                     pageNum++;//页码加 1
+                    if(finalDirection==Direction.DOWN||finalDirection==null){//重新加载list数据，所以，开启上下拉都允许模式
+                        data.clear();
+                        pullToRefreshView.setMode(PullToRefreshBase.Mode.BOTH);
+                    }
                     String dataStr = jsonObject.getString("data");
                     JSONArray ja = new JSONArray(dataStr);
                     int length = ja.length();
@@ -125,15 +258,18 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends ListFragmen
                 } else {
                     Toast.makeText(FragmentStudentCheckHistoryCheckdLeaveFragment.this.getActivity(), "获取未审批列表数据失败", Toast.LENGTH_SHORT).show();
                 }
-                HistorycheckedLeaveAdapter ul = new HistorycheckedLeaveAdapter(data, FragmentStudentCheckHistoryCheckdLeaveFragment.this.getActivity());
-                pullToRefreshView.setAdapter(ul);
+                hl.notifyDataSetChanged();
+                pullToRefreshView.onRefreshComplete();
+                if(data.size()%pageSize!=0){//当前页面的数据少于一页的数据，所以上拉获取更多数据模式关闭
+                    pullToRefreshView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                }else{
+                    pullToRefreshView.setMode(PullToRefreshBase.Mode.BOTH);
+                }
             }
         });
-//        }else{//直接从缓存中去取
-//
-//        }
-
-
     }
 
+    enum Direction{
+        UP,DOWN;
+    }
 }

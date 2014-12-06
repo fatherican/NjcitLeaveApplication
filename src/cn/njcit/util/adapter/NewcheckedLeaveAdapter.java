@@ -83,7 +83,7 @@ public class NewcheckedLeaveAdapter extends BaseAdapter {
             GradientDrawable gd = (GradientDrawable) viewHolder.approvedTV.getBackground();
             gd.setColor(Color.argb(180,0,255,0));
         }else  if("2".equals(approved)){
-            viewHolder.approvedTV.setText("待审批");
+            viewHolder.approvedTV.setText("审核中");
             GradientDrawable gd = (GradientDrawable) viewHolder.approvedTV.getBackground();
             gd.setColor(Color.argb(180,231,179,37));
         }

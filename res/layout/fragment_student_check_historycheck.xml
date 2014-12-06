@@ -18,9 +18,98 @@
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/pull_to_refresh_listview"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent" />
+		android:layout_height="fill_parent"
+        android:id="@+id/holeLinearLayout">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:id="@+id/query_content_linearLayout">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/history_query_linearLayout"
+           >
+           <TableLayout
+               android:layout_weight="1"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent">
+                <TableRow android:padding="10dip" android:background="@drawable/shape_no_corner_without_bottom">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dip"
+                        android:text="@string/history_start_date"/>
+                    <EditText android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:singleLine="true"
+                        android:text="2014-01-01 00:00:00"
+                        android:id="@+id/leaveStartDateEt"
+                        />
+                </TableRow>
+               <TableRow android:padding="10dip" android:background="@drawable/shape_no_corner_without_bottom">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                       android:layout_marginRight="10dip"
+                       android:text="@string/history_end_date"/>
+                   <EditText android:layout_weight="1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                       android:background="@null"
+                       android:singleLine="true"
+                       android:text="2015-01-01 00:00:00"
+                       android:id="@+id/leaveEndDateEt"
+                       />
+               </TableRow>
+               <TableRow android:padding="10dip" android:background="@drawable/shape_no_corner_without_bottom">
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                       android:layout_marginRight="10dip"
+                       android:text="@string/approve_state_label"/>
+                   <EditText android:layout_weight="1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="center_vertical"
+                       android:background="@null"
+                       android:singleLine="true"
+                       android:text="2015-01-01 00:00:00"
+                       android:id="@+id/approvedStateSE"
+                       />
+               </TableRow>
+           </TableLayout>
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:id="@+id/queryBT"
+               android:text="查询"/>
+       </LinearLayout>
+        <LinearLayout
+            android:id="@+id/query_arrow_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:background="#ffcccccc" >
+            <ImageView
+                android:id="@+id/query_arrow_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@android:drawable/arrow_up_float"/>
+        </LinearLayout>
+   </LinearLayout>
+
+
+
+   <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/pull_to_refresh_listview"
+            android:layout_height="wrap_content"
+       android:layout_weight="1"
+            android:layout_width="fill_parent" />
 </LinearLayout>

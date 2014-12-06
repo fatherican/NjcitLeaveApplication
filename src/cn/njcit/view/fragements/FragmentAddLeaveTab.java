@@ -143,7 +143,7 @@ public class FragmentAddLeaveTab extends Fragment {
                     rp.add("leaveStartDate",leaveStartDateEt.getText().toString());
                     rp.add("leaveEndDate",leaveEndDateEt.getText().toString());
                     try {
-                        rp.add("leaveDays",String.valueOf(getSubDays(DateUtils.parseDate(leaveStartDateEt.getText().toString(),new String[]{"yyyy-MM-dd"}),DateUtils.parseDate(leaveEndDateEt.getText().toString(),new String[]{"yyyy-MM-dd"}))+1));
+                        rp.add("leaveDays",String.valueOf(getSubDays(DateUtils.parseDate(leaveEndDateEt.getText().toString(),new String[]{"yyyy-MM-dd"}),DateUtils.parseDate(leaveStartDateEt.getText().toString(),new String[]{"yyyy-MM-dd"}))+1));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -183,9 +183,7 @@ public class FragmentAddLeaveTab extends Fragment {
      * @return
      */
     private long getSubDays(Date firstDate,Date secondDate){
-        Date currentDate = new Date();
-        Date tomorrow = DateUtils.addDays(currentDate,1);
-        return (tomorrow.getTime()-currentDate.getTime())/(86400000);
+        return (firstDate.getTime()-secondDate.getTime())/(86400000);
     }
 
 

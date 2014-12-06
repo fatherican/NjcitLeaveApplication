@@ -43,7 +43,7 @@ public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment imp
     @ViewById(R.id.pull_to_refresh_listview)
     PullToRefreshListView pullToRefreshView;
     List<Map<String,String>> data = new ArrayList<Map<String, String>>();
-    UncheckedLeaveAdapter ul = null;
+    NewcheckedLeaveAdapter ul = null;
     public static Fragment newInstance() {
         return new FragmentStudentCheckNewCheckdLeaveFragment_();
     }
@@ -60,7 +60,7 @@ public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment imp
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(rootView==null){
-            rootView = inflater.inflate(R.layout.fragment_student_check_uncheck,container,false);
+            rootView = inflater.inflate(R.layout.fragment_student_check_newcheck,container,false);
         }
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
@@ -74,7 +74,7 @@ public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment imp
         if(!isInstanced){
             getUncheckedLeaveAdapter(null);
             isInstanced = true;
-            ul = new UncheckedLeaveAdapter(data,FragmentStudentCheckNewCheckdLeaveFragment.this.getActivity());
+            ul = new NewcheckedLeaveAdapter(data,FragmentStudentCheckNewCheckdLeaveFragment.this.getActivity());
             pullToRefreshView.setAdapter(ul);
             pullToRefreshView.setOnRefreshListener(this);
             pullToRefreshView.setOnLastItemVisibleListener(this);
