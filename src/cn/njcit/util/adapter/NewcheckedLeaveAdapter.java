@@ -72,8 +72,10 @@ public class NewcheckedLeaveAdapter extends BaseAdapter {
         viewHolder.leaveDateTV.setText(data.get(position).get("leaveDate"));
         String approved = data.get(position).get("approved");//-1 未审批0 未通过 1通过 2辅导员已审批等待学管处审批
         String leaveType =data.get(position).get("leaveType");// 0 节次请假，1天数请假
-        if("-1".equals(leaveType)){
+        if("-1".equals(approved)){
             viewHolder.approvedTV.setText("未审批");
+            GradientDrawable gd = (GradientDrawable) viewHolder.approvedTV.getBackground();
+            gd.setColor(Color.argb(180, 255, 169, 169));
         }else  if("0".equals(approved)){
             viewHolder.approvedTV.setText("不同意");
             GradientDrawable gd = (GradientDrawable) viewHolder.approvedTV.getBackground();
