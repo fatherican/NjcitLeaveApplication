@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import cn.njcit.R;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 @EFragment(R.layout.fragment_student_check_uncheck)
-public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment implements PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
+public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment implements AdapterView.OnItemClickListener,PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
     private View rootView;
     private int pageNum=1;
     private int pageSize = 20;
@@ -49,6 +50,7 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment impl
     public static Fragment newInstance() {
         return new FragmentStudentCheckUnCheckdLeaveFragment_();
     }
+
 
 
 
@@ -80,6 +82,7 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment impl
             pullToRefreshView.setAdapter(ul);
             pullToRefreshView.setOnRefreshListener(this);
             pullToRefreshView.setOnLastItemVisibleListener(this);
+            pullToRefreshView.setOnItemClickListener(this);
         }
     }
 
@@ -98,6 +101,11 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment impl
        if(data.size()%pageSize!=0){
            Toast.makeText(this.getActivity(),"没有更多数据",Toast.LENGTH_SHORT).show();
        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(FragmentStudentCheckUnCheckdLeaveFragment.this.getActivity(),"hellowworkd",Toast.LENGTH_SHORT).show();
     }
 
     public void getUncheckedLeaveAdapter(Direction direction){
