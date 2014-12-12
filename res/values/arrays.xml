@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="approvedStates">
+        <item>全部</item>
         <item>未审批</item>
         <item>同意</item>
         <item>不同意</item>

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import cn.njcit.R;
 import cn.njcit.constants.AppConstants;
@@ -55,12 +56,14 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment im
     EditText leaveStartDateET;
     @ViewById(R.id.leaveEndDateEt)
     EditText leaveEndDateET;
+    @ViewById(R.id.approvedStateSP)
+    Spinner approvedStatesSP;
     @ViewById(R.id.queryBT)
     Button queryBT;
     @ViewById(R.id.holeLinearLayout)
     LinearLayout holeLinearLayout;
 
-    NewcheckedLeaveAdapter hl = null;
+    HistorycheckedLeaveAdapter hl = null;
     List<Map<String,String>> data = new ArrayList<Map<String, String>>();
 
 
@@ -125,7 +128,7 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment im
         if(!isInstanced){
             getUncheckedLeaveAdapter(null);
             isInstanced = true;
-            hl = new NewcheckedLeaveAdapter(data,FragmentStudentCheckHistoryCheckdLeaveFragment.this.getActivity());
+            hl = new HistorycheckedLeaveAdapter(data,FragmentStudentCheckHistoryCheckdLeaveFragment.this.getActivity());
             pullToRefreshView.setAdapter(hl);
             pullToRefreshView.setOnRefreshListener(this);
             pullToRefreshView.setOnLastItemVisibleListener(this);
@@ -212,6 +215,15 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment im
         rp.add("pageSize", pageSize + "");
         rp.add("startTime",leaveStartDateET.getText().toString());
         rp.add("endTime",leaveEndDateET.getText().toString());
+        if("未审批".equals(approvedStatesSP.getSelectedItem().toString())){
+            rp.add("approved","-1");
+        }else if("同意".equals(approvedStatesSP.getSelectedItem().toString())){
+            rp.add("approved","1");
+        }else if("不同意".equals(approvedStatesSP.getSelectedItem().toString())){
+            rp.add("approved","0");
+        }else if("审核中".equals(approvedStatesSP.getSelectedItem().toString())){
+            rp.add("approved","2");
+        }
 
 
         HttpClientUtils.post("/leave/studentGetLeaveList.do", rp, new LeaveJsonHttpResponseHandler(this.getActivity()) {
