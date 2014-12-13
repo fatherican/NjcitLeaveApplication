@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import cn.njcit.R;
@@ -20,6 +21,8 @@ import cn.njcit.util.adapter.UncheckedLeaveAdapter;
 import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
+import lib.Effectstype;
+import lib.NiftyDialogBuilder;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -35,7 +38,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 @EFragment(R.layout.fragment_student_check_uncheck)
-public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment implements PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
+public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment implements AdapterView.OnItemClickListener, PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
     private View rootView;
     private int pageNum = 1;
     private int pageSize = 20;
@@ -79,6 +82,7 @@ public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment imp
             pullToRefreshView.setOnRefreshListener(this);
             pullToRefreshView.setOnLastItemVisibleListener(this);
         }
+        pullToRefreshView.setOnItemClickListener(this);
     }
         @Override
         public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView){
@@ -97,6 +101,31 @@ public class FragmentStudentCheckNewCheckdLeaveFragment extends ListFragment imp
                 }
         }
 
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Map<String,String> item = data.get(position-1);
+        LayoutInflater layoutInflater = LayoutInflater.from(this.getActivity());
+        View v = layoutInflater.inflate(R.layout.leave_detail, null);
+        LeaveDetailViewHolder.initView(v,item);
+        final NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(this.getActivity());
+        dialogBuilder.withTitleColor("#FFFFFF")
+                .withTitle("请假详情")
+                .withMessage("")
+                .withEffect(Effectstype.Fadein)
+                .withDuration(400)
+                .withDialogColor("#FFcccccc")
+                .withButton1Text("关闭")
+                .setCustomView(v, this.getActivity())
+                .setButton1Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        dialogBuilder.cancel();
+                    }
+                })
+                .show();
+    }
     public void getUncheckedLeaveAdapter(Direction direction) {
         final Direction finalDirection = direction;
         if(finalDirection==Direction.DOWN){//重新加载list数据，所以，开启上下拉都允许模式

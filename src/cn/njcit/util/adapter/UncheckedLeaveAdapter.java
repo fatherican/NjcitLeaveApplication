@@ -17,6 +17,9 @@ import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
 import cn.njcit.util.view.DialogUtils;
+import lib.Effectstype;
+import lib.NiftyDialogBuilder;
+
 import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
@@ -95,42 +98,90 @@ public class UncheckedLeaveAdapter extends BaseAdapter {
 
 
     public void showLeaveDeleteDialg(final Context context, final int clickPosition){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("请假处理");
-        builder.setMessage("是否撤销本次请假？");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                RequestParams rp = new RequestParams();
-                rp.add("userId", SharedPrefeenceUtils.getSharedPreferenceString(context, "userId"));
-                rp.add("token", MD5Utils.md5Hex(SharedPrefeenceUtils.getSharedPreferenceString(context, "userId") + AppConstants.SOCKET_KEY));
-                rp.add("leaveId", data.get(clickPosition).get("leaveId"));
-                DialogUtils.showTrasparentDialog(context);
-                HttpClientUtils.post("leave/delLeaveItem.do",rp,new LeaveJsonHttpResponseHandler(context) {
+        final NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(context);
+        dialogBuilder.withTitleColor("#FFFFFF")
+                .withTitle("撤销假条")
+                .withMessage("是否撤销本次请假？")
+                .withEffect(Effectstype.Slideright)
+                .withDuration(400)
+                .setCustomView(android.R.layout.activity_list_item,context)
+                .withDialogColor("#FFcccccc")
+                .withButton1Text("确定")
+                .withButton2Text("取消")
+                .setButton1Click(new View.OnClickListener() {
                     @Override
-                    public void getJsonObject(JSONObject jsonObject) throws Exception {
-                        String code = jsonObject.getString("code");
-                        if("200".equals(code)){
-                            DialogUtils.hideTrasparentDialog(context);
-                            data.remove(clickPosition);
-                            UncheckedLeaveAdapter.this.notifyDataSetChanged();
-                            Toast.makeText(context,"假条撤销成功",Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(context,"系统异常",Toast.LENGTH_LONG).show();
-                        }
+                    public void onClick(View v) {
+                        RequestParams rp = new RequestParams();
+                        rp.add("userId", SharedPrefeenceUtils.getSharedPreferenceString(context, "userId"));
+                        rp.add("token", MD5Utils.md5Hex(SharedPrefeenceUtils.getSharedPreferenceString(context, "userId") + AppConstants.SOCKET_KEY));
+                        rp.add("leaveId", data.get(clickPosition).get("leaveId"));
+                        DialogUtils.showTrasparentDialog(context);
+                        HttpClientUtils.post("leave/delLeaveItem.do",rp,new LeaveJsonHttpResponseHandler(context) {
+                            @Override
+                            public void getJsonObject(JSONObject jsonObject) throws Exception {
+                                String code = jsonObject.getString("code");
+                                if("200".equals(code)){
+                                    DialogUtils.hideTrasparentDialog(context);
+                                    dialogBuilder.dismiss();
+                                    dialogBuilder.cancel();
+                                    data.remove(clickPosition);
+                                    UncheckedLeaveAdapter.this.notifyDataSetChanged();
+                                    Toast.makeText(context,"假条撤销成功",Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(context,"系统异常",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
                     }
-                });
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.show();
+                }) .setButton2Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                    }
+                })
+                .show();
+//
+//
+//
+//
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        builder.setTitle("请假处理");
+//        builder.setMessage("是否撤销本次请假？");
+//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                RequestParams rp = new RequestParams();
+//                rp.add("userId", SharedPrefeenceUtils.getSharedPreferenceString(context, "userId"));
+//                rp.add("token", MD5Utils.md5Hex(SharedPrefeenceUtils.getSharedPreferenceString(context, "userId") + AppConstants.SOCKET_KEY));
+//                rp.add("leaveId", data.get(clickPosition).get("leaveId"));
+//                DialogUtils.showTrasparentDialog(context);
+//                HttpClientUtils.post("leave/delLeaveItem.do",rp,new LeaveJsonHttpResponseHandler(context) {
+//                    @Override
+//                    public void getJsonObject(JSONObject jsonObject) throws Exception {
+//                        String code = jsonObject.getString("code");
+//                        if("200".equals(code)){
+//                            DialogUtils.hideTrasparentDialog(context);
+//                            data.remove(clickPosition);
+//                            UncheckedLeaveAdapter.this.notifyDataSetChanged();
+//                            Toast.makeText(context,"假条撤销成功",Toast.LENGTH_LONG).show();
+//                        }else{
+//                            Toast.makeText(context,"系统异常",Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        builder.show();
     }
 
 

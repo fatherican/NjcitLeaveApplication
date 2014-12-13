@@ -15,6 +15,8 @@ import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.AESEncryptor;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
+import lib.NiftyDialogBuilder;
+
 import com.loopj.android.http.RequestParams;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;

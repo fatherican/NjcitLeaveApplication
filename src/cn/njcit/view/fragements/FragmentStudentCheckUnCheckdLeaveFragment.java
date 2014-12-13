@@ -1,6 +1,8 @@
 package cn.njcit.view.fragements;
 
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 import cn.njcit.R;
 import cn.njcit.constants.AppConstants;
@@ -22,6 +26,8 @@ import cn.njcit.util.adapter.UncheckedLeaveAdapter;
 import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
+import lib.Effectstype;
+import lib.NiftyDialogBuilder;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -82,8 +88,8 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment impl
             pullToRefreshView.setAdapter(ul);
             pullToRefreshView.setOnRefreshListener(this);
             pullToRefreshView.setOnLastItemVisibleListener(this);
-            pullToRefreshView.setOnItemClickListener(this);
         }
+        pullToRefreshView.setOnItemClickListener(this);
     }
 
     @Override
@@ -105,7 +111,27 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment impl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(FragmentStudentCheckUnCheckdLeaveFragment.this.getActivity(),"hellowworkd",Toast.LENGTH_SHORT).show();
+        final Map<String,String> item = data.get(position-1);
+        LayoutInflater layoutInflater = LayoutInflater.from(this.getActivity());
+        View v = layoutInflater.inflate(R.layout.leave_detail, null);
+        LeaveDetailViewHolder.initView(v,item);
+        final NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(this.getActivity());
+        dialogBuilder.withTitleColor("#FFFFFF")
+                .withTitle("请假详情")
+                .withMessage("")
+                .withEffect(Effectstype.Fadein)
+                .withDuration(400)
+                .withDialogColor("#FFcccccc")
+                .withButton1Text("关闭")
+                .setCustomView(v, this.getActivity())
+                .setButton1Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        dialogBuilder.cancel();
+                    }
+                })
+                .show();
     }
 
     public void getUncheckedLeaveAdapter(Direction direction){
@@ -192,4 +218,5 @@ public class FragmentStudentCheckUnCheckdLeaveFragment extends ListFragment impl
     enum Direction{
         UP,DOWN;
     }
+
 }

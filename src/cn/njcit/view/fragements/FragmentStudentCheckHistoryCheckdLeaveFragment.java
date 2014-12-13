@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ import cn.njcit.util.adapter.NewcheckedLeaveAdapter;
 import cn.njcit.util.data.SharedPrefeenceUtils;
 import cn.njcit.util.enctype.MD5Utils;
 import cn.njcit.util.http.HttpClientUtils;
+import lib.Effectstype;
+import lib.NiftyDialogBuilder;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -39,7 +42,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 @EFragment(R.layout.fragment_student_check_historycheck)
-public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment implements PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
+public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment implements AdapterView.OnItemClickListener, PullToRefreshBase.OnRefreshListener2<ListView>,PullToRefreshBase.OnLastItemVisibleListener{
     private View rootView;
     private int pageNum = 1;
     private int pageSize = 20;
@@ -133,6 +136,7 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment im
             pullToRefreshView.setOnRefreshListener(this);
             pullToRefreshView.setOnLastItemVisibleListener(this);
         }
+        pullToRefreshView.setOnItemClickListener(this);
     }
 
     @Click(R.id.query_arrow_linearLayout)
@@ -163,35 +167,31 @@ public class FragmentStudentCheckHistoryCheckdLeaveFragment  extends Fragment im
             queryArrowImage.setImageResource(android.R.drawable.arrow_up_float);
 
         }
-        vpa.setListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+    }
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if(isShown){
-                   // historyQueryLinearLayout.setVisibility(View.GONE);
-                    //ListView.LayoutParams layoutParams = new ListView.LayoutParams(holeLinearLayout);
-                    holeLinearLayout.postInvalidate();
-                   // pullToRefreshView.setLayoutParams(layoutParams);
-                }else{
-                    //historyQueryLinearLayout.setVisibility(View.VISIBLE);
-                    holeLinearLayout.postInvalidate();
-                }
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Map<String,String> item = data.get(position-1);
+        LayoutInflater layoutInflater = LayoutInflater.from(this.getActivity());
+        View v = layoutInflater.inflate(R.layout.leave_detail, null);
+        LeaveDetailViewHolder.initView(v,item);
+        final NiftyDialogBuilder dialogBuilder=NiftyDialogBuilder.getInstance(this.getActivity());
+        dialogBuilder.withTitleColor("#FFFFFF")
+                .withTitle("请假详情")
+                .withMessage("")
+                .withEffect(Effectstype.Fadein)
+                .withDuration(400)
+                .withDialogColor("#FFcccccc")
+                .withButton1Text("关闭")
+                .setCustomView(v, this.getActivity())
+                .setButton1Click(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogBuilder.dismiss();
+                        dialogBuilder.cancel();
+                    }
+                })
+                .show();
     }
 
 
