@@ -3,12 +3,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:layout_width="fill_parent"
 			  android:layout_height="fill_parent"
-			  android:background="#0000FF"
 			  android:orientation="vertical" >
-	<TextView
-			android:id="@+id/textView1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.15"
-			android:text="this is the third fragment" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/pull_to_refresh_listview"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="fill_parent" />
 </LinearLayout>

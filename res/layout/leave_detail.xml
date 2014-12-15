@@ -4,35 +4,35 @@
     android:layout_height="match_parent" android:paddingLeft="20dip" android:paddingRight="10dip">
     <TableRow  android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="请假类型:" android:textStyle="bold" android:textSize="18sp" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/leave_type" android:text="aaaaa" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/leave_type" android:text="" />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/course_name_row">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="课程名称:" android:textStyle="bold" android:textSize="18sp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/course_name" android:text="dddd" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/course_name" android:text="" />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/course_index_row">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="节次:" android:textStyle="bold" android:textSize="18sp" android:gravity="right"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip"  android:id="@+id/course_index" android:text="aaaaa" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip"  android:id="@+id/course_index" android:text="" />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="请假日期:" android:textStyle="bold" android:textSize="18sp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip"  android:id="@+id/leave_date"  android:text="aaaaa"  />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip"  android:id="@+id/leave_date"  android:text=""  />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="请假事由:" android:textStyle="bold" android:textSize="18sp" />
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/leave_reason"  android:text="Dialog各种弹出效果 (NiftyDialogEffects) - 下载频道 - CSDN.NET基于Android Studio Dialog各种弹出效果 (NiftyDialogEffects)https://github.com/sd6352051/NiftyDialogEffects资源积分:0分 下载次数:54 资源类型:代码类 资源大小:..."  />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/leave_reason"  android:text=""  />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="审批状态:" android:textStyle="bold" android:textSize="18sp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/approve_state" android:text="aaaaa"  />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/approve_state" android:text=""  />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/instructor_note_row" android:visibility="gone">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="辅导员意见:" android:textStyle="bold" android:textSize="18sp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/instructor_note" android:text="aaaaa" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/instructor_note" android:text="" />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/student_pipe_note_row" android:visibility="gone">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="学管处意见:" android:textStyle="bold" android:textSize="18sp"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/student_pipe_note" android:text="aaaaa" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"  android:layout_weight="1" android:padding="4dip" android:id="@+id/student_pipe_note" android:text="" />
     </TableRow>
     <TableRow   android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text=" " />

@@ -141,47 +141,7 @@ public class UncheckedLeaveAdapter extends BaseAdapter {
                     }
                 })
                 .show();
-//
-//
-//
-//
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//        builder.setTitle("请假处理");
-//        builder.setMessage("是否撤销本次请假？");
-//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                RequestParams rp = new RequestParams();
-//                rp.add("userId", SharedPrefeenceUtils.getSharedPreferenceString(context, "userId"));
-//                rp.add("token", MD5Utils.md5Hex(SharedPrefeenceUtils.getSharedPreferenceString(context, "userId") + AppConstants.SOCKET_KEY));
-//                rp.add("leaveId", data.get(clickPosition).get("leaveId"));
-//                DialogUtils.showTrasparentDialog(context);
-//                HttpClientUtils.post("leave/delLeaveItem.do",rp,new LeaveJsonHttpResponseHandler(context) {
-//                    @Override
-//                    public void getJsonObject(JSONObject jsonObject) throws Exception {
-//                        String code = jsonObject.getString("code");
-//                        if("200".equals(code)){
-//                            DialogUtils.hideTrasparentDialog(context);
-//                            data.remove(clickPosition);
-//                            UncheckedLeaveAdapter.this.notifyDataSetChanged();
-//                            Toast.makeText(context,"假条撤销成功",Toast.LENGTH_LONG).show();
-//                        }else{
-//                            Toast.makeText(context,"系统异常",Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        builder.show();
+
     }
 
 

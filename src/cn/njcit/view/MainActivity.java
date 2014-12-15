@@ -25,7 +25,7 @@ public class MainActivity extends FragmentActivity {
     private Class fragmentArray[] = new Class[]{FragmentAddLeaveTab_.class, FragmentStudentCheckTab_.class, FragmentStudentSickLeavTab_.class};
 
     //定义数组来存放按钮图片
-    private int mImageViewArray[] = {R.drawable.tab_item_1_btn,R.drawable.ic_launcher,R.drawable.tab_item_1_btn, R.drawable.ic_launcher, R.drawable.ic_launcher};
+    private int mImageViewArray[] = {android.R.drawable.ic_menu_add,android.R.drawable.ic_menu_agenda,android.R.drawable.ic_lock_idle_alarm, R.drawable.ic_launcher, R.drawable.ic_launcher};
     //Tab选项卡的文字
     private String mTextviewArray[] = {"请假", "审批", "销假"};
     LayoutInflater layoutInflater = null;
